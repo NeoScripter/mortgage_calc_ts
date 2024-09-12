@@ -1,0 +1,263 @@
+*,
+::after,
+::before {
+    box-sizing: border-box;
+}
+*,
+ul {
+    margin: 0;
+    padding: 0;
+}
+body {
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+}
+canvas,
+img,
+picture,
+svg,
+video {
+    display: block;
+    max-width: 100%;
+}
+button {
+    all: unset;
+}
+button,
+input,
+select,
+textarea {
+    font: inherit;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+    overflow-wrap: break-word;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    text-align: balance;
+}
+li {
+    list-style: none;
+    color: inherit;
+    font-size: inherit;
+}
+p,
+li,
+figcaption {
+    max-width: 65ch;
+    text-wrap: pretty;
+}
+a {
+    text-decoration: none;
+    color: inherit;
+    font-size: inherit;
+}
+
+
+@font-face {
+    font-family: 'Bold';
+    src: url('fonts/PlusJakartaSans-Bold.woff2') format('woff2'),
+        url('fonts/PlusJakartaSans-Bold.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Regular';
+    src: url('fonts/PlusJakartaSans-Medium.woff2') format('woff2'),
+        url('fonts/PlusJakartaSans-Medium.woff') format('woff');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+:root{
+    --green-400: #D8DB2F;
+    --green-100: rgba(#D8DB2F, 0.15);
+    --black-900: #133041;
+    --black-700: #4E6E7E;
+    --black-500: #6B94A8;
+    --blue-300: #9ABED5;
+    --blue-100: #E4F4FD;
+}
+
+html, body {
+    overflow-x: hidden;
+    overflow-x: clip;
+}
+
+body {
+    font-family: 'Regular';
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--blue-100);
+}
+
+.calc {
+    max-width: 43rem;
+    margin-inline: auto;
+    background-color: #fff;
+}
+
+.calc__panel {
+    padding: 1rem;
+    display: grid;
+    gap: 1.5rem;
+}
+
+.calc__title {
+    font-family: 'Bold';
+    font-size: 1.5rem;
+    color: var(--black-900);
+    margin-bottom: 0.2rem;
+}
+
+.calc__clear-btn {
+    font-size: 1rem;
+    color: var(--black-700);
+    cursor: pointer;
+}
+
+.calc__body {
+    display: grid;
+    gap: 1.5rem;
+}
+
+.calc__field {
+    width: 100%;
+}
+
+.calc__label {
+    display: block;
+    font-size: 1rem;
+    color: var(--black-700);
+    margin-bottom: 0.5rem;
+}
+
+.calc__flex .calc__field:first-of-type {
+    margin-bottom: 1.5rem;
+}
+
+.calc__input-wrap {
+    max-width: 100%;
+    display: flex;
+    border: 0.08rem solid var(--black-500);
+    overflow: hidden;
+    border-radius: 0.35rem;
+}
+
+.calc__input-wrap:has(.calc__input:focus) {
+    outline: 0.08rem solid var(--black-700);
+}
+
+.calc__symbol {
+    padding: 0.5rem 1rem;
+    background-color: var(--blue-100);
+    color: var(--black-700);
+    font-family: "Bold";
+    display: block;
+}
+
+.calc__input {
+    width: 100%;
+    padding: 0.5rem;
+    border: none;
+    flex-basis: 100%;
+    outline: none;
+}
+
+.calc__radio-field {
+
+}
+
+.calc__radio-btn {
+
+}
+
+.calc__radio {
+
+}
+
+.calc__radio-label {
+
+}
+
+.calc__history-btn {
+
+}
+
+.results {
+    padding: 1rem;
+}
+
+.results__title {
+
+}
+
+.results__desc {
+
+}
+
+.results__content {
+
+}
+
+.results__monthly {
+
+}
+
+.results__subtitle {
+
+}
+
+.results__monthly-outcome {
+
+}
+
+.results__total {
+
+}
+
+.results__total-outcome {
+
+}
+
+@media screen and (min-width: 38rem) {
+    body {
+        padding: 1rem;
+    }
+    .calc {
+        border-radius: 0.5rem;
+        margin-top: 3rem;
+        padding: 1.5rem;
+    }
+    .calc__panel {
+        gap: 2.5rem;
+    }
+    .calc__flex {
+        display: flex;
+        gap: 2rem;
+    }
+    .calc__input {
+        width: 40%;
+    }
+}
+
+@media screen and (min-width: 65rem) {
+    .calc {
+        display: flex;
+        max-width: 65rem;
+    }
+}

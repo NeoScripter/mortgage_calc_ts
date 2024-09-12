@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Mortgage Calculator</title>
+        <script src="bundle.js" defer></script>
+    </head>
+    <body>
+        <div class="calc">
+            <div class="calc__panel">
+                <header class="calc__header">
+                    <h1 class="calc__title">Mortgage Calculator</h1>
+                    <button class="calc__clear-btn">Clear All</button>
+                </header>
+                <div class="calc__body">
+                    <div class="calc__field">
+                        <label class="calc__label">Mortgage Amount</label>
+                        <div class="calc__input-wrap">
+                            <span class="calc__symbol">£</span>
+                            <input type="text" class="calc__input">
+                        </div>
+                    </div>
+                    <div class="calc__flex">
+                        <div class="calc__field">
+                            <label class="calc__label">Mortgage Term</label>
+                            <div class="calc__input-wrap">
+                                <input type="text" class="calc__input">
+                                <span class="calc__symbol">years</span>
+                            </div>
+                        </div>
+                        <div class="calc__field">
+                            <label class="calc__label">Mortgage Rate</label>
+                            <div class="calc__input-wrap">
+                                <input type="text" class="calc__input">
+                                <span class="calc__symbol">%</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="calc__radio-field">
+                        <label class="calc__label">Mortgage Type</label>
+                        <div class="calc__radio-btn">
+                            <input type="radio" class="calc__radio" id="repayment">
+                            <label for="repayment" class="calc__radio-label">Repayment</label>
+                        </div>
+                        <div class="calc__radio-btn">
+                            <input type="radio" class="calc__radio" id="interest">
+                            <label for="interest" class="calc__radio-label">Interest Only</label>
+                        </div>
+                    </div>
+                </div>
+                <button class="calc__history-btn">Check History</button>
+            </div>
+            <div class="results">
+                <h2 class="results__title">Your Results</h2>
+                <p class="results__desc">Your results are shown below based on the information you provided. To adjust, edit the form and recalculate.</p>
+                <div class="results__content">
+                    <div class="results__monthly">
+                        <p class="results__subtitle">Monthly Repayments</p>
+                        <input type="text" class="results__monthly-outcome" readonly>
+                    </div>
+                    <div class="results__total">
+                        <p class="results__subtitle">Total Repayment</p>
+                        <input type="text" class="results__total-outcome" readonly>
+                    </div>
+                </div>
+            </div>
+        </div>        
+    </body>
+</html>
