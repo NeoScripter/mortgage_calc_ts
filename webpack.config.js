@@ -6,6 +6,7 @@ module.exports = {
   output: {
     filename: 'bundle.js',
     path: path.resolve(__dirname, 'dist'),
+    publicPath: '/',
   },
   resolve: {
     extensions: ['.ts', '.tsx', '.js'],
@@ -31,6 +32,9 @@ module.exports = {
       {
         test: /\.(png|jpg|jpeg|gif|svg)$/i,  // Image files (JPG, PNG, etc.)
         type: 'asset/resource',  // Use asset/resource to bundle images
+        generator: {
+          filename: 'images/[name][ext]',  // Output images to the images folder in dist
+        },
       },
     ],
   },

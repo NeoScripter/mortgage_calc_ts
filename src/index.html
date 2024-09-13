@@ -20,6 +20,7 @@
                             <span class="calc__symbol">£</span>
                             <input type="text" class="calc__input">
                         </div>
+                        <p class="calc__error"></p>
                     </div>
                     <div class="calc__flex">
                         <div class="calc__field">
@@ -28,6 +29,7 @@
                                 <input type="text" class="calc__input">
                                 <span class="calc__symbol">years</span>
                             </div>
+                            <p class="calc__error"></p>
                         </div>
                         <div class="calc__field">
                             <label class="calc__label">Mortgage Rate</label>
@@ -35,33 +37,43 @@
                                 <input type="text" class="calc__input">
                                 <span class="calc__symbol">%</span>
                             </div>
+                            <p class="calc__error"></p>
                         </div>
                     </div>
                     <div class="calc__radio-field">
                         <label class="calc__label">Mortgage Type</label>
                         <div class="calc__radio-btn">
-                            <input type="radio" class="calc__radio" id="repayment">
+                            <div class="calc__radio">
+                                <input type="radio" id="repayment" name="type">
+                            </div>
                             <label for="repayment" class="calc__radio-label">Repayment</label>
                         </div>
                         <div class="calc__radio-btn">
-                            <input type="radio" class="calc__radio" id="interest">
+                            <div class="calc__radio">
+                                <input type="radio" id="interest" name="type">
+                            </div>
                             <label for="interest" class="calc__radio-label">Interest Only</label>
                         </div>
                     </div>
                 </div>
-                <button class="calc__history-btn">Check History</button>
+                <button class="calc__history-btn">
+                    <img src="assets/images/history.svg" alt="sdf">
+                    Check History
+                </button>
             </div>
             <div class="results">
-                <h2 class="results__title">Your Results</h2>
-                <p class="results__desc">Your results are shown below based on the information you provided. To adjust, edit the form and recalculate.</p>
-                <div class="results__content">
-                    <div class="results__monthly">
-                        <p class="results__subtitle">Monthly Repayments</p>
-                        <input type="text" class="results__monthly-outcome" readonly>
-                    </div>
-                    <div class="results__total">
-                        <p class="results__subtitle">Total Repayment</p>
-                        <input type="text" class="results__total-outcome" readonly>
+                <div class="results__wrapper">
+                    <h2 class="results__title">Your Results</h2>
+                    <p class="results__desc">Your results are shown below based on the information you provided. To adjust, edit the form and recalculate.</p>
+                    <div class="results__content">
+                        <div class="results__monthly">
+                            <p class="results__subtitle">Your monthly repayments</p>
+                            <input type="text" class="results__monthly-outcome">
+                        </div>
+                        <div class="results__total">
+                            <p class="results__subtitle">Total you'll repay over the term</p>
+                            <input type="text" class="results__total-outcome">
+                        </div>
                     </div>
                 </div>
             </div>
