@@ -2,8 +2,12 @@ export default class CalculatorHanlder {
     resultsPreview: HTMLElement | null;
     resultsPanel: HTMLElement | null;
     calculateBtn: HTMLElement | null;
+    amountField: HTMLInputElement | null;
     hiddenPreviewClass: string;
+
     currency: string;
+    currencyBtns: NodeListOf<HTMLInputElement> | null;
+    currencySymbol: HTMLElement | null;
 
     errorHolderSelector: string;
     inputParentSelector: string;
@@ -19,20 +23,25 @@ export default class CalculatorHanlder {
     totalField: HTMLInputElement | null;
     monthlyField: HTMLInputElement | null;
 
+    conversionRates: Map<string, number>;
+
 
     constructor() {
         this.resultsPreview = document.querySelector('.results__preview');
         this.resultsPanel = document.querySelector('.results__wrapper');
         this.calculateBtn = document.querySelector('.calc__calculate-btn');
         this.hiddenPreviewClass = 'results__preview--hidden';
-        this.currency = '£';
 
         this.errorHolderSelector = '.calc__error';
         this.inputParentSelector = '.calc__field';  
         this.radioBtnErrorField = '.calc__radio-field .calc__error';  
 
-        this.mortgageType = '';
+        this.mortgageType = 'repayment';
         this.mortgageTypeBtns = document.querySelectorAll('input[name="type"]');
+
+        this.currency = '£';
+        this.currencyBtns = document.querySelectorAll('input[name="currency"]');
+        this.currencySymbol = document.querySelector('.calc__symbol');
 
         this.mortgageAmountField = document.querySelector('input[name="amount"]');
         this.mortgageTermField = document.querySelector('input[name="term"]');
@@ -40,6 +49,21 @@ export default class CalculatorHanlder {
 
         this.monthlyField = document.querySelector('#monthlyResult');
         this.totalField = document.querySelector('#totalResult');
+
+        this.amountField = document.querySelector('input[name="amount"]');
+        this.conversionRates = new Map<string, number>([
+            // USD to other currencies
+            ['$_€', 0.85], // USD to Euro
+            ['$_£', 0.75], // USD to British Pound
+
+            // Euro to other currencies
+            ['€_$', 1.18], // Euro to USD
+            ['€_£', 0.88], // Euro to British Pound
+
+            // British Pound to other currencies
+            ['£_$', 1.33], // British Pound to USD
+            ['£_€', 1.14], // British Pound to Euro
+        ]);
     }
 
     // Initialize the Class
@@ -47,6 +71,7 @@ export default class CalculatorHanlder {
     init() {
         this.calculate();
         this.setupMortgageTypeSelection();
+        this.setupMortgageCurrencySelection();
     }
 
     // Final Methods
@@ -146,15 +171,10 @@ export default class CalculatorHanlder {
         let monthlyInterest;
         let totalInterest;
 
-        const mortgageType = this.getMortgageType();
-        if (mortgageType === undefined) {
-            return;
-        }
-
         if (this.mortgageType === 'interest') {
             monthlyInterest = this.calculateMonthlyRepaymentInterest();
             totalInterest = this.calculateTotalRepaymentInterest();
-        } else {
+        } else if (this.mortgageType === 'repayment') {
             monthlyInterest = this.calculateMonthlyRepayment();
             totalInterest = this.calculateTotalRepayment();
         }
@@ -201,21 +221,6 @@ export default class CalculatorHanlder {
 
     // Handle Mortgage Type Field
 
-    getMortgageType() {
-        const errorField = document.querySelector(this.radioBtnErrorField);
-            if (!errorField) {
-                console.warn(`Couldn't find the error field`);
-                return;
-            }
-        if (this.mortgageType === '') {
-            errorField.textContent = 'Please choose the mortgage type!';
-            this.hideResult();
-            return;
-        }
-        errorField.textContent = '';
-        return this.mortgageType;
-    }
-
     setupMortgageTypeSelection() {
         if (!this.mortgageTypeBtns) {
             console.warn('Radio buttons are not found in the DOM!');
@@ -232,6 +237,54 @@ export default class CalculatorHanlder {
                 }
             });
         });
+    }
+
+    // Handle Currency Field
+
+    setupMortgageCurrencySelection() {
+        if (!this.currencyBtns || !this.currencySymbol) {
+            console.warn('Radio buttons or currency span are not found in the DOM!');
+            return;
+        }
+        this.currencyBtns.forEach((radio) => {
+            if (radio.checked) {
+                this.convertCurrency(this.currency, radio.value);
+                this.currency = radio.value;
+                this.currencySymbol!.textContent = radio.value;
+            }
+            radio.addEventListener('change', (event) => {
+                const target = event.target as HTMLInputElement;
+                if (target.checked) {
+                    this.convertCurrency(this.currency, target.value);
+                    this.currency = target.value;
+                    this.currencySymbol!.textContent = target.value;
+                }
+            });
+        });
+    }
+
+    // Handle Currency Conversion
+
+    getConversionRate(fromCurrency: string, toCurrency: string): number | undefined {
+        const key = `${fromCurrency}_${toCurrency}`;
+        return this.conversionRates.get(key);
+    }
+
+    convertCurrency(fromCurrency: string, toCurrency: string) {
+        if (!this.amountField) {
+            console.warn("Amount field is not found");
+            return;
+        }
+        const currentValue = this.amountField.value;
+        if (isNaN(Number(currentValue)) || currentValue === '') {
+            return;
+        }
+        const rate = this.getConversionRate(fromCurrency, toCurrency);
+        const amount = Number(currentValue);
+        if (rate === undefined) {
+            return;
+        }
+        this.amountField.value = `${this.roundUpToTwoDecimals(amount * rate)}`;
     }
 
     // Handle Numberic Fields

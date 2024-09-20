@@ -44,7 +44,7 @@
                         <label class="calc__label">Mortgage Type</label>
                         <div class="calc__radio-btn">
                             <div class="calc__radio">
-                                <input type="radio" id="repayment" name="type">
+                                <input type="radio" id="repayment" name="type" checked>
                             </div>
                             <label for="repayment" class="calc__radio-label">Repayment</label>
                         </div>
@@ -54,8 +54,34 @@
                             </div>
                             <label for="interest" class="calc__radio-label">Interest Only</label>
                         </div>
-                        <p class="calc__error"></p>
                     </div>
+
+
+                    <div class="calc__radio-field">
+                        <label class="calc__label">Currency</label>
+                        <div class="calc__radio-flex">
+                            <div class="calc__radio-btn">
+                                <div class="calc__radio">
+                                    <input type="radio" id="pounds" name="currency" value="£">
+                                </div>
+                                <label for="pounds" class="calc__radio-label">£</label>
+                            </div>
+                            <div class="calc__radio-btn">
+                                <div class="calc__radio">
+                                    <input type="radio" id="dollars" name="currency" value="$" checked>
+                                </div>
+                                <label for="dollars" class="calc__radio-label">$</label>
+                            </div>
+                            <div class="calc__radio-btn">
+                                <div class="calc__radio">
+                                    <input type="radio" id="euros" name="currency" value="€">
+                                </div>
+                                <label for="euros" class="calc__radio-label">€</label>
+                            </div>
+                        </div>
+                    </div>
+
+
                 </div>
                 <div class="calc__btn-wrapper">
                     <button class="calc__history-btn" aria-label="check history button">
