@@ -117,6 +117,7 @@ body {
     padding: 1rem;
     display: grid;
     gap: 1.5rem;
+    flex: 1 0 50%;
 }
 
 .calc__title {
@@ -295,6 +296,12 @@ body {
     background-color: rgba(246, 247, 174, 1);
 }
 
+.results {
+    flex: 1 0 50%;
+    position: relative;
+    overflow: hidden;
+}
+
 .results__wrapper {
     padding: 1.5rem;
     background-color: var(--black-800);
@@ -356,6 +363,43 @@ body {
     font-size: 1.5rem;
 }
 
+.results__preview {
+    padding: 1.5rem;
+    background-color: var(--black-800);
+    color: var(--blue-300);
+    position: absolute;
+    inset: 0;
+    transition: opacity 0.5s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.results__preview-img {
+    width: 12rem;
+    height: 12rem;
+}
+
+.results__preview-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+.results__preview-title {
+    color: #fff;
+    font-size: 1.5rem;
+    font-family: 'Bold';
+}
+
+.results__preview-description {
+    font-size: 1rem;
+    text-align: center;
+}
+
 @media screen and (min-width: 38rem) {
     body {
         padding: 1rem;
@@ -404,8 +448,13 @@ body {
     .calc {
         border-radius: 2rem;
     }
-    .results__wrapper {
+    .results {
         border-radius: 0 0 0 5rem;
+    }
+    .results__preview {
+        border-radius: 0 0 0 5rem;
+    }
+    .results__wrapper {
         padding: 2.5rem;
     }
     

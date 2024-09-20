@@ -1,11 +1,13 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin'); // Import the plugin
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin'); 
 
 module.exports = {
   entry: './src/index.ts',
   output: {
     filename: 'bundle.js',
-    path: path.resolve(__dirname, 'dist'),
+    path: path.resolve(__dirname, 'docs'),
     publicPath: '/',
   },
   resolve: {
@@ -41,6 +43,15 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       template: './src/index.html',  // Path to your HTML file
+    }),
+    new MiniCssExtractPlugin({
+      filename: 'css/[name].[contenthash].css',
+    }),
+    new CopyWebpackPlugin({
+      patterns: [
+        { from: 'src/assets/images', to: 'assets/images' },  // Copy images to dist/assets/images
+        { from: 'src/assets/svgs', to: 'assets/svgs' },
+      ],
     }),
   ],
   devServer: {
