@@ -2,16 +2,21 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin'); // Import the plugin
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin'); 
+const { CleanWebpackPlugin } = require('clean-webpack-plugin'); 
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 
 module.exports = {
-  entry: './src/index.ts',
+  mode: 'production', 
+  entry: {
+    main: './src/index.ts',
+  },
   output: {
-    filename: 'bundle.js',
+    filename: 'js/[name].[contenthash].js',
     path: path.resolve(__dirname, 'docs'),
     publicPath: '/',
   },
   resolve: {
-    extensions: ['.ts', '.tsx', '.js'],
+    extensions: ['.ts', '.tsx', '.js',  '.css'],
   },
   module: {
     rules: [
@@ -22,7 +27,11 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        use: ['style-loader', 'css-loader', 'postcss-loader'],
+        use: [
+          MiniCssExtractPlugin.loader,  // Extract CSS into separate file
+          'css-loader',  // Parses CSS files
+          'postcss-loader',  // Processes CSS with PostCSS plugins (optional, for autoprefixing, etc.)
+        ],
       },
       {
         test: /\.(woff|woff2|eot|ttf|otf)$/i,  // Font file types
@@ -41,11 +50,12 @@ module.exports = {
     ],
   },
   plugins: [
+    new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
       template: './src/index.html',  // Path to your HTML file
     }),
     new MiniCssExtractPlugin({
-      filename: 'css/[name].[contenthash].css',
+      filename: 'css/[name].[contenthash].css',  
     }),
     new CopyWebpackPlugin({
       patterns: [
@@ -54,6 +64,13 @@ module.exports = {
       ],
     }),
   ],
+  optimization: {
+    minimize: true,  
+    minimizer: [
+      `...`,  // Use default JS minifier (TerserPlugin)
+      new CssMinimizerPlugin(),  // Minify CSS
+    ],
+  },
   devServer: {
     static: {
       directory: path.join(__dirname, 'dist'), // Replace 'contentBase' with 'static.directory'
