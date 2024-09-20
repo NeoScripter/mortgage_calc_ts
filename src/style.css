@@ -316,7 +316,7 @@ body {
     flex: max-content 0 0;
 }
 
-.calc__save-btn {
+.calc__calculate-btn {
     user-select: none;
     cursor: pointer;
     display: flex;
@@ -334,12 +334,12 @@ body {
 }
 
 .calc__history-btn img,
-.calc__save-btn img {
+.calc__calculate-btn img {
     width: 1.2rem;
 }
 
 .calc__history-btn:is(:hover, :focus),
-.calc__save-btn:is(:hover, :focus) {
+.calc__calculate-btn:is(:hover, :focus) {
     background-color: rgba(246, 247, 174, 1);
 }
 
@@ -422,10 +422,11 @@ body {
     align-items: center;
     justify-content: center;
     gap: 1rem;
+    opacity: 0;
 }
 
 .results__preview--hidden {
-    opacity: 0;
+    opacity: 1;
 }
 
 .results__preview-img {

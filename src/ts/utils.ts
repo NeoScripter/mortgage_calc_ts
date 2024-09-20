@@ -1,7 +1,7 @@
 export default class CalculatorHanlder {
     resultsPreview: HTMLElement | null;
     resultsPanel: HTMLElement | null;
-    checkHistoryBtn: HTMLElement | null;
+    calculateBtn: HTMLElement | null;
     hiddenPreviewClass: string;
     currency: string;
 
@@ -23,7 +23,7 @@ export default class CalculatorHanlder {
     constructor() {
         this.resultsPreview = document.querySelector('.results__preview');
         this.resultsPanel = document.querySelector('.results__wrapper');
-        this.checkHistoryBtn = document.querySelector('.calc__history-btn');
+        this.calculateBtn = document.querySelector('.calc__calculate-btn');
         this.hiddenPreviewClass = 'results__preview--hidden';
         this.currency = '£';
 
@@ -45,21 +45,39 @@ export default class CalculatorHanlder {
     // Initialize the Class
 
     init() {
-        this.togglePanel();
+        this.calculate();
         this.setupMortgageTypeSelection();
     }
 
     // Final Methods
 
-    togglePanel() {
-        if (!this.checkHistoryBtn || !this.resultsPreview) {
+    calculate() {
+        if (!this.calculateBtn) {
             console.warn('Button or panel are not found in the DOM!');
             return;
         }
 
-        this.checkHistoryBtn.addEventListener('click', () => {
+        this.calculateBtn.addEventListener('click', () => {
             this.displayResults();
         })
+    }
+
+    showResult() {
+        if (!this.resultsPreview) {
+            console.warn('Panel is not found in the DOM!');
+            return;
+        }
+
+        this.resultsPreview.classList.remove(this.hiddenPreviewClass);
+    }
+
+    hideResult() {
+        if (!this.resultsPreview) {
+            console.warn('Panel is not found in the DOM!');
+            return;
+        }
+
+        this.resultsPreview.classList.add(this.hiddenPreviewClass);
     }
 
     // Calculation Main Methods
@@ -127,6 +145,12 @@ export default class CalculatorHanlder {
         }
         let monthlyInterest;
         let totalInterest;
+
+        const mortgageType = this.getMortgageType();
+        if (mortgageType === undefined) {
+            return;
+        }
+
         if (this.mortgageType === 'interest') {
             monthlyInterest = this.calculateMonthlyRepaymentInterest();
             totalInterest = this.calculateTotalRepaymentInterest();
@@ -136,11 +160,13 @@ export default class CalculatorHanlder {
         }
 
         if (monthlyInterest === undefined || totalInterest === undefined) {
+            this.hideResult();
             return;
         }
 
         this.monthlyField.value = this.currency + monthlyInterest;
         this.totalField.value = this.currency + totalInterest;
+        this.showResult();
     }
 
     // Calculation Helpers
@@ -183,6 +209,7 @@ export default class CalculatorHanlder {
             }
         if (this.mortgageType === '') {
             errorField.textContent = 'Please choose the mortgage type!';
+            this.hideResult();
             return;
         }
         errorField.textContent = '';
