@@ -13,7 +13,6 @@ module.exports = {
   output: {
     filename: 'js/[name].[contenthash].js',
     path: path.resolve(__dirname, 'docs'),
-    publicPath: '/',
   },
   resolve: {
     extensions: ['.ts', '.tsx', '.js',  '.css'],
