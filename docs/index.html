@@ -1,1 +1,79 @@
-<!doctype html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>Mortgage Calculator</title><script src="bundle.js" defer="defer"></script><script defer="defer" src="/js/main.33cea818f5c8b57bf731.js"></script><link href="/css/main.0a38b742efc1c11b5bf8.css" rel="stylesheet"></head><body><div class="calc"><div class="calc__panel"><header class="calc__header"><h1 class="calc__title">Mortgage Calculator</h1><button class="calc__clear-btn">Clear All</button></header><div class="calc__body"><div class="calc__field"><label class="calc__label">Mortgage Amount</label><div class="calc__input-wrap"><span class="calc__symbol">£</span> <input class="calc__input"></div><p class="calc__error"></p></div><div class="calc__flex"><div class="calc__field"><label class="calc__label">Mortgage Term</label><div class="calc__input-wrap"><input class="calc__input"> <span class="calc__symbol">years</span></div><p class="calc__error"></p></div><div class="calc__field"><label class="calc__label">Mortgage Rate</label><div class="calc__input-wrap"><input class="calc__input"> <span class="calc__symbol">%</span></div><p class="calc__error"></p></div></div><div class="calc__radio-field"><label class="calc__label">Mortgage Type</label><div class="calc__radio-btn"><div class="calc__radio"><input type="radio" id="repayment" name="type"></div><label for="repayment" class="calc__radio-label">Repayment</label></div><div class="calc__radio-btn"><div class="calc__radio"><input type="radio" id="interest" name="type"></div><label for="interest" class="calc__radio-label">Interest Only</label></div></div></div><button class="calc__history-btn"><img src="assets/svgs/history.svg" alt="sdf"> Check History</button></div><div class="results"><div class="results__preview"><div class="results__preview-img"><img src="assets/images/preview.png" alt="Calculator with a set of calculating supplies"></div><h2 class="results__preview-title">Results shown here</h2><p class="results__preview-description">Complete the form and click “calculate repayments” to see what your monthly repayments would be.</p></div><div class="results__wrapper"><h2 class="results__title">Your Results</h2><p class="results__desc">Your results are shown below based on the information you provided. To adjust, edit the form and recalculate.</p><div class="results__content"><div class="results__monthly"><p class="results__subtitle">Your monthly repayments</p><input class="results__monthly-outcome"></div><div class="results__total"><p class="results__subtitle">Total you'll repay over the term</p><input class="results__total-outcome"></div></div></div></div></div></body></html>
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <title>Mortgage Calculator</title>
+        <script src="bundle.js" defer="defer"></script>
+        <script defer="defer" src="js/main.33cea818f5c8b57bf731.js"></script>
+        <link href="css/main.0a38b742efc1c11b5bf8.css" rel="stylesheet" />
+    </head>
+    <body>
+        <div class="calc">
+            <div class="calc__panel">
+                <header class="calc__header">
+                    <h1 class="calc__title">Mortgage Calculator</h1>
+                    <button class="calc__clear-btn">Clear All</button>
+                </header>
+                <div class="calc__body">
+                    <div class="calc__field">
+                        <label class="calc__label">Mortgage Amount</label>
+                        <div class="calc__input-wrap"><span class="calc__symbol">£</span> <input class="calc__input" /></div>
+                        <p class="calc__error"></p>
+                    </div>
+                    <div class="calc__flex">
+                        <div class="calc__field">
+                            <label class="calc__label">Mortgage Term</label>
+                            <div class="calc__input-wrap"><input class="calc__input" /> <span class="calc__symbol">years</span></div>
+                            <p class="calc__error"></p>
+                        </div>
+                        <div class="calc__field">
+                            <label class="calc__label">Mortgage Rate</label>
+                            <div class="calc__input-wrap"><input class="calc__input" /> <span class="calc__symbol">%</span></div>
+                            <p class="calc__error"></p>
+                        </div>
+                    </div>
+                    <div class="calc__radio-field">
+                        <label class="calc__label">Mortgage Type</label>
+                        <div class="calc__radio-btn">
+                            <div class="calc__radio"><input type="radio" id="repayment" name="type" /></div>
+                            <label for="repayment" class="calc__radio-label">Repayment</label>
+                        </div>
+                        <div class="calc__radio-btn">
+                            <div class="calc__radio"><input type="radio" id="interest" name="type" /></div>
+                            <label for="interest" class="calc__radio-label">Interest Only</label>
+                        </div>
+                    </div>
+                </div>
+                <button class="calc__history-btn"><img src="assets/svgs/history.svg" alt="sdf" /> Check History</button>
+            </div>
+            <div class="results">
+                <div class="results__preview">
+                    <div class="results__preview-img">
+                        <img src="assets/images/preview.png" alt="Calculator with a set of calculating supplies" />
+                    </div>
+                    <h2 class="results__preview-title">Results shown here</h2>
+                    <p class="results__preview-description">
+                        Complete the form and click “calculate repayments” to see what your monthly repayments would be.
+                    </p>
+                </div>
+                <div class="results__wrapper">
+                    <h2 class="results__title">Your Results</h2>
+                    <p class="results__desc">
+                        Your results are shown below based on the information you provided. To adjust, edit the form and recalculate.
+                    </p>
+                    <div class="results__content">
+                        <div class="results__monthly">
+                            <p class="results__subtitle">Your monthly repayments</p>
+                            <input class="results__monthly-outcome" />
+                        </div>
+                        <div class="results__total">
+                            <p class="results__subtitle">Total you'll repay over the term</p>
+                            <input class="results__total-outcome" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
