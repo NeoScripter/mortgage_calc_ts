@@ -1,9 +1,13 @@
+const NUMBER_FORMATTER = new Intl.NumberFormat(undefined);
+
 export default class CalculatorHanlder {
     resultsPreview: HTMLElement | null;
     resultsPanel: HTMLElement | null;
     calculateBtn: HTMLElement | null;
     amountField: HTMLInputElement | null;
     hiddenPreviewClass: string;
+    inputErrorClass: string;
+    inputTextFields: NodeListOf<HTMLInputElement> | null;
 
     currency: string;
     currencyBtns: NodeListOf<HTMLInputElement> | null;
@@ -25,6 +29,8 @@ export default class CalculatorHanlder {
 
     conversionRates: Map<string, number>;
 
+    clearBtn: HTMLElement | null;
+
 
     constructor() {
         this.resultsPreview = document.querySelector('.results__preview');
@@ -32,8 +38,10 @@ export default class CalculatorHanlder {
         this.calculateBtn = document.querySelector('.calc__calculate-btn');
         this.hiddenPreviewClass = 'results__preview--hidden';
 
+        this.inputTextFields = document.querySelectorAll('input[type="text"]');
         this.errorHolderSelector = '.calc__error';
         this.inputParentSelector = '.calc__field';  
+        this.inputErrorClass = 'calc__field--error';
         this.radioBtnErrorField = '.calc__radio-field .calc__error';  
 
         this.mortgageType = 'repayment';
@@ -41,7 +49,7 @@ export default class CalculatorHanlder {
 
         this.currency = '£';
         this.currencyBtns = document.querySelectorAll('input[name="currency"]');
-        this.currencySymbol = document.querySelector('.calc__symbol');
+        this.currencySymbol = document.querySelector('#currency-symbol');
 
         this.mortgageAmountField = document.querySelector('input[name="amount"]');
         this.mortgageTermField = document.querySelector('input[name="term"]');
@@ -51,6 +59,7 @@ export default class CalculatorHanlder {
         this.totalField = document.querySelector('#totalResult');
 
         this.amountField = document.querySelector('input[name="amount"]');
+        this.clearBtn = document.querySelector("#clear-all-btn");
         this.conversionRates = new Map<string, number>([
             // USD to other currencies
             ['$_€', 0.85], // USD to Euro
@@ -72,6 +81,7 @@ export default class CalculatorHanlder {
         this.calculate();
         this.setupMortgageTypeSelection();
         this.setupMortgageCurrencySelection();
+        this.clearFields();
     }
 
     // Final Methods
@@ -105,32 +115,51 @@ export default class CalculatorHanlder {
         this.resultsPreview.classList.add(this.hiddenPreviewClass);
     }
 
+    // Clear Fields 
+
+    clearFields() {
+        if (!this.clearBtn) {
+            console.warn('Button is not in the DOM');
+            return;
+        }
+        this.clearBtn.addEventListener('click', () => {
+            if (!this.inputTextFields) {
+                console.warn('Inputs are not in the DOM');
+                return;
+            }
+            this.inputTextFields.forEach(input => {
+                input.value = '';
+            });
+            this.hideResult();
+        })
+    }
+
     // Calculation Main Methods
 
     calculateMonthlyRepaymentInterest() {
         const mortgageAmount = this.calculateMortgageAmount();
         const monthlyInterestRate = this.calculateMontlyInterestRate();
-
+    
         if (mortgageAmount === undefined || monthlyInterestRate === undefined) {
             return;
         }
-
-        const monthlyRepayment = mortgageAmount * monthlyInterestRate;
-
-        return this.roundUpToTwoDecimals(monthlyRepayment);
+    
+        const monthlyInterestPayment = mortgageAmount * monthlyInterestRate;
+    
+        return this.roundUpToTwoDecimals(monthlyInterestPayment);
     }
 
     calculateTotalRepaymentInterest() {
         const mortgageAmount = this.calculateMortgageAmount();
-        const totalNumberOfPayments = this.calculateTotalNumberOfPayments();
-        const monthlyRepayment = this.calculateMonthlyRepaymentInterest(); 
+        const totalRepayment = this.calculateTotalRepayment();
     
-        if (totalNumberOfPayments === undefined || monthlyRepayment === undefined || mortgageAmount === undefined) {
+        if (mortgageAmount === undefined || totalRepayment === undefined) {
             return;
         }
     
-        const totalRepayment = monthlyRepayment * totalNumberOfPayments + mortgageAmount;
-        return this.roundUpToTwoDecimals(totalRepayment);
+        const totalInterest = totalRepayment - mortgageAmount;
+    
+        return this.roundUpToTwoDecimals(totalInterest);
     }
 
     calculateMonthlyRepayment() {
@@ -184,8 +213,8 @@ export default class CalculatorHanlder {
             return;
         }
 
-        this.monthlyField.value = this.currency + monthlyInterest;
-        this.totalField.value = this.currency + totalInterest;
+        this.monthlyField.value = this.currency + NUMBER_FORMATTER.format(monthlyInterest);
+        this.totalField.value = this.currency + NUMBER_FORMATTER.format(totalInterest);
         this.showResult();
     }
 
@@ -284,7 +313,7 @@ export default class CalculatorHanlder {
         if (rate === undefined) {
             return;
         }
-        this.amountField.value = `${this.roundUpToTwoDecimals(amount * rate)}`;
+        this.amountField.value = `${NUMBER_FORMATTER.format(this.roundUpToTwoDecimals(amount * rate))}`;
     }
 
     // Handle Numberic Fields
@@ -292,6 +321,7 @@ export default class CalculatorHanlder {
     displayError(errorMessage: string, element: HTMLInputElement) {
         const inputParent = element.closest(this.inputParentSelector);
         const errorField = inputParent?.querySelector(this.errorHolderSelector);
+        inputParent?.classList.add(this.inputErrorClass);
         if (!errorField) {
             console.warn(`Couldn't find the error field`);
             return;
@@ -302,6 +332,7 @@ export default class CalculatorHanlder {
     resetErrorField(element: HTMLInputElement) {
         const inputParent = element.closest(this.inputParentSelector);
         const errorField = inputParent?.querySelector(this.errorHolderSelector);
+        inputParent?.classList.remove(this.inputErrorClass);
         if (!errorField) {
             console.warn(`Couldn't find the error field`);
             return;
@@ -317,7 +348,7 @@ export default class CalculatorHanlder {
         let value: string = inputElement.value.trim(); 
 
         if (removeCommas) {
-            value = value.replace(/[.,]/g, '');
+            value = value.replace(/[,]/g, '');
         }
         
         // Check if the input is empty

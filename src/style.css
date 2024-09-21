@@ -178,6 +178,15 @@ body {
     margin-bottom: 1.5rem;
 }
 
+.calc__field--error .calc__input-wrap {
+    border-color: #D73328;
+}
+
+.calc__field--error .calc__symbol {
+    background-color: #D73328;
+    color: #fff;
+}
+
 .calc__input-wrap {
     max-width: 100%;
     display: flex;
