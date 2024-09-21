@@ -1,5 +1,15 @@
 const NUMBER_FORMATTER = new Intl.NumberFormat(undefined);
 
+type CalculationResult = {
+    amount: string,
+    term: string,
+    rate: string,
+    type: string,
+    currency: string,
+    monthly: string,
+    total: string
+}
+
 export default class CalculatorHanlder {
     resultsPreview: HTMLElement | null;
     resultsPanel: HTMLElement | null;
@@ -30,7 +40,9 @@ export default class CalculatorHanlder {
     conversionRates: Map<string, number>;
 
     clearBtn: HTMLElement | null;
+    showHistoryBtn: HTMLElement | null;
 
+    historyArrayIndex: number;
 
     constructor() {
         this.resultsPreview = document.querySelector('.results__preview');
@@ -60,6 +72,7 @@ export default class CalculatorHanlder {
 
         this.amountField = document.querySelector('input[name="amount"]');
         this.clearBtn = document.querySelector("#clear-all-btn");
+        this.showHistoryBtn = document.querySelector('.calc__history-btn');
         this.conversionRates = new Map<string, number>([
             // USD to other currencies
             ['$_€', 0.85], // USD to Euro
@@ -73,6 +86,8 @@ export default class CalculatorHanlder {
             ['£_$', 1.33], // British Pound to USD
             ['£_€', 1.14], // British Pound to Euro
         ]);
+
+        this.historyArrayIndex = 0;
     }
 
     // Initialize the Class
@@ -82,6 +97,8 @@ export default class CalculatorHanlder {
         this.setupMortgageTypeSelection();
         this.setupMortgageCurrencySelection();
         this.clearFields();
+        this.setupHistoryBtnEventListener();
+        this.hideDisplayOnInput();
     }
 
     // Final Methods
@@ -114,6 +131,106 @@ export default class CalculatorHanlder {
 
         this.resultsPreview.classList.add(this.hiddenPreviewClass);
     }
+
+    // Hide the Display when the input changes
+
+    hideDisplayOnInput() {
+        if (!this.inputTextFields) {
+            console.warn('Input fields not found!')
+            return
+        }
+
+        this.inputTextFields.forEach(field => {
+            field.addEventListener('input', () => {
+                this.hideResult();
+            })
+        })
+    }
+
+    // Display the Result from History
+
+    setupHistoryBtnEventListener() {
+        if (!this.showHistoryBtn) {
+            console.warn('Button not found!')
+            return
+        }
+
+        this.showHistoryBtn.addEventListener('click', () => {
+            this.showPreviousResult();
+        })
+    }
+
+    showPreviousResult() {
+        if (!this.mortgageAmountField || !this.mortgageTermField || !this.mortgageRateField || !this.monthlyField || !this.totalField) {
+            console.warn('Input fields not found!')
+            return
+        }
+
+        const prevResults: Array<CalculationResult> = this.getResultsFromLocalStorage();
+        const prevCalculation = prevResults[this.historyArrayIndex];
+
+        if (!prevCalculation) return
+
+        console.log(prevCalculation);
+
+        this.mortgageAmountField.value = prevCalculation.amount;
+        this.mortgageTermField.value = prevCalculation.term;
+        this.mortgageRateField.value = prevCalculation.rate;
+        this.monthlyField.value = prevCalculation.monthly;
+        this.totalField.value = prevCalculation.total;
+
+        const mortgageTypeBtn: HTMLInputElement | null = document.querySelector(`#${prevCalculation.type}`);
+        const mortgageCurrencyBtn: HTMLInputElement | null = document.querySelector(`input[value="${prevCalculation.currency}"]`);
+
+        if (!mortgageTypeBtn || !mortgageCurrencyBtn) {
+            console.warn('Radio button not found!')
+            return
+        }
+
+        mortgageTypeBtn.checked = true;
+        mortgageCurrencyBtn.checked = true;
+        this.historyArrayIndex++;
+        this.showResult();
+    }
+
+    // Save the Result
+
+    saveCalculationResult() {
+        if (!this.mortgageAmountField || !this.mortgageTermField || !this.mortgageRateField || !this.monthlyField || !this.totalField) return
+
+        const inputData: CalculationResult = {
+            amount: this.mortgageAmountField.value,
+            term: this.mortgageTermField.value,
+            rate: this.mortgageRateField.value,
+            type: this.mortgageType,
+            currency: this.currency,
+            monthly: this.monthlyField.value,
+            total: this.totalField.value
+        };
+
+        this.setResultsToLocalStorage(inputData);
+    }
+
+    getResultsFromLocalStorage(): Array<CalculationResult> {
+        const mortgageCalculations = localStorage.getItem('mortgageCalculations');
+        
+        const parsedData = mortgageCalculations ? JSON.parse(mortgageCalculations) : [];
+        
+        return Array.isArray(parsedData) ? parsedData : [];
+    }
+    
+    setResultsToLocalStorage(mortgageCalculations: CalculationResult): void {
+        const prevResults: Array<CalculationResult> = this.getResultsFromLocalStorage();
+    
+        prevResults.unshift(mortgageCalculations);
+    
+        if (prevResults.length > 10) {
+            prevResults.pop(); 
+        }
+    
+        localStorage.setItem('mortgageCalculations', JSON.stringify(prevResults));
+    }
+
 
     // Clear Fields 
 
@@ -213,8 +330,10 @@ export default class CalculatorHanlder {
             return;
         }
 
+        this.historyArrayIndex = 0;
         this.monthlyField.value = this.currency + NUMBER_FORMATTER.format(monthlyInterest);
         this.totalField.value = this.currency + NUMBER_FORMATTER.format(totalInterest);
+        this.saveCalculationResult();
         this.showResult();
     }
 
@@ -226,26 +345,26 @@ export default class CalculatorHanlder {
 
     calculateMortgageAmount() {
         const fieldValue = this.validateInput(this.mortgageAmountField, true);
-        if (typeof(fieldValue) === 'number') {
+        if (typeof(fieldValue) === 'number' && fieldValue < 10000000000) {
             return fieldValue;
         }
-        console.log('Amount is undefined!');
+        return
     }
 
     calculateMontlyInterestRate() {
         const fieldValue = this.validateInput(this.mortgageRateField);
-        if (typeof(fieldValue) === 'number') {
+        if (typeof(fieldValue) === 'number' && fieldValue < 101) {
             return fieldValue / 12 / 100;
         }
-        console.log('Rate is undefined!');
+        return
     }
 
     calculateTotalNumberOfPayments() {
         const fieldValue = this.validateInput(this.mortgageTermField);
-        if (typeof(fieldValue) === 'number') {
+        if (typeof(fieldValue) === 'number' && fieldValue < 100) {
             return fieldValue * 12;
         }
-        console.log('Term is undefined!');
+        return
     }
 
     // Handle Mortgage Type Field
@@ -304,13 +423,16 @@ export default class CalculatorHanlder {
             console.warn("Amount field is not found");
             return;
         }
-        const currentValue = this.amountField.value;
+        let currentValue = this.amountField.value;
+        currentValue = currentValue.replace(/[,]/g, '');
         if (isNaN(Number(currentValue)) || currentValue === '') {
+            console.warn("Amount field is NaN");
             return;
         }
         const rate = this.getConversionRate(fromCurrency, toCurrency);
         const amount = Number(currentValue);
         if (rate === undefined) {
+            console.warn("Amount field undefined");
             return;
         }
         this.amountField.value = `${NUMBER_FORMATTER.format(this.roundUpToTwoDecimals(amount * rate))}`;
@@ -374,8 +496,20 @@ export default class CalculatorHanlder {
         }
     
         // Check for extremely large or small numbers (overflow/underflow protection)
-        if (!isFinite(numericValue)) {
-            const errorMessage = 'The number is too large or too small!';
+        if (inputElement.name === 'amount' && numericValue > 10000000000) {
+            const errorMessage = 'The amount is too large!';
+            this.displayError(errorMessage, inputElement);
+            return;
+        }
+
+        if (inputElement.name === 'term' && numericValue > 100) {
+            const errorMessage = 'The term is too large!';
+            this.displayError(errorMessage, inputElement);
+            return;
+        }
+
+        if (inputElement.name === 'rate' && numericValue > 100) {
+            const errorMessage = 'The rate is too high!';
             this.displayError(errorMessage, inputElement);
             return;
         }
