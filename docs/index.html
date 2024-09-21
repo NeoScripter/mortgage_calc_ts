@@ -1,1 +1,122 @@
-<!doctype html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>Mortgage Calculator</title><link rel="icon" href="assets/images/favicon.ico" type="image/x-icon"><script defer="defer" src="js/main.ce0a90c2c02e64f0f559.js"></script><link href="css/main.749d736d105a36d6e452.css" rel="stylesheet"></head><body><div class="calc"><div class="calc__panel"><header class="calc__header"><h1 class="calc__title">Mortgage Calculator</h1><button class="calc__clear-btn" id="clear-all-btn" aria-label="Clear all button">Clear All</button></header><div class="calc__body"><div class="calc__field"><label class="calc__label">Mortgage Amount</label><div class="calc__input-wrap"><span class="calc__symbol" id="currency-symbol">£</span> <input class="calc__input" name="amount"></div><p class="calc__error"></p></div><div class="calc__flex"><div class="calc__field"><label class="calc__label">Mortgage Term</label><div class="calc__input-wrap"><input class="calc__input" name="term"> <span class="calc__symbol">years</span></div><p class="calc__error"></p></div><div class="calc__field"><label class="calc__label">Mortgage Rate</label><div class="calc__input-wrap"><input class="calc__input" name="rate"> <span class="calc__symbol">%</span></div><p class="calc__error"></p></div></div><div class="calc__radio-field"><label class="calc__label">Mortgage Type</label><div class="calc__radio-btn"><div class="calc__radio"><input type="radio" id="repayment" name="type" checked="checked"></div><label for="repayment" class="calc__radio-label">Repayment</label></div><div class="calc__radio-btn"><div class="calc__radio"><input type="radio" id="interest" name="type"></div><label for="interest" class="calc__radio-label">Interest Only</label></div></div><div class="calc__radio-field"><label class="calc__label">Currency</label><div class="calc__radio-flex"><div class="calc__radio-btn"><div class="calc__radio"><input type="radio" id="pounds" name="currency" value="£"></div><label for="pounds" class="calc__radio-label">£</label></div><div class="calc__radio-btn"><div class="calc__radio"><input type="radio" id="dollars" name="currency" value="$" checked="checked"></div><label for="dollars" class="calc__radio-label">$</label></div><div class="calc__radio-btn"><div class="calc__radio"><input type="radio" id="euros" name="currency" value="€"></div><label for="euros" class="calc__radio-label">€</label></div></div></div></div><div class="calc__btn-wrapper"><button class="calc__history-btn" aria-label="check history button"><img src="assets/svgs/save.svg" alt="save to history"> Previous</button> <button class="calc__calculate-btn" aria-label="calcualte button"><img src="assets/svgs/history.svg" alt="calculator"> Calculate</button></div></div><div class="results"><div class="results__preview results__preview--hidden"><div class="results__preview-img"><img src="assets/images/preview.png" alt="Calculator with a set of calculating supplies"></div><h2 class="results__preview-title">Results shown here</h2><p class="results__preview-description">Complete the form and click "Calculate" to see what your monthly repayments would be.</p></div><div class="results__wrapper"><h2 class="results__title">Your Results</h2><p class="results__desc">Your results are shown below based on the information you provided. To adjust, edit the form and recalculate.</p><div class="results__content"><div class="results__monthly"><p class="results__subtitle">Your monthly repayments</p><input class="results__monthly-outcome" value="£245" id="monthlyResult"></div><div class="results__total"><p class="results__subtitle">Total you'll repay over the term</p><input class="results__total-outcome" value="£24345" id="totalResult"></div></div></div></div></div></body></html>
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Mortgage Calculator</title>
+        <link rel="icon" href="assets/images/favicon.ico" type="image/x-icon">
+    </head>
+    <body>
+        <div class="calc">
+            <div class="calc__panel">
+                <header class="calc__header">
+                    <h1 class="calc__title">Mortgage Calculator</h1>
+                    <button class="calc__clear-btn" id="clear-all-btn" aria-label="Clear all button">Clear All</button>
+                </header>
+                <div class="calc__body">
+                    <div class="calc__field">
+                        <label class="calc__label">Mortgage Amount</label>
+                        <div class="calc__input-wrap">
+                            <span class="calc__symbol" id="currency-symbol">£</span>
+                            <input type="text" class="calc__input" name="amount">
+                        </div>
+                        <p class="calc__error"></p>
+                    </div>
+                    <div class="calc__flex">
+                        <div class="calc__field">
+                            <label class="calc__label">Mortgage Term</label>
+                            <div class="calc__input-wrap">
+                                <input type="text" class="calc__input" name="term">
+                                <span class="calc__symbol">years</span>
+                            </div>
+                            <p class="calc__error"></p>
+                        </div>
+                        <div class="calc__field">
+                            <label class="calc__label">Mortgage Rate</label>
+                            <div class="calc__input-wrap">
+                                <input type="text" class="calc__input" name="rate">
+                                <span class="calc__symbol">%</span>
+                            </div>
+                            <p class="calc__error"></p>
+                        </div>
+                    </div>
+                    <div class="calc__radio-field">
+                        <label class="calc__label">Mortgage Type</label>
+                        <div class="calc__radio-btn">
+                            <div class="calc__radio">
+                                <input type="radio" id="repayment" name="type" checked>
+                            </div>
+                            <label for="repayment" class="calc__radio-label">Repayment</label>
+                        </div>
+                        <div class="calc__radio-btn">
+                            <div class="calc__radio">
+                                <input type="radio" id="interest" name="type">
+                            </div>
+                            <label for="interest" class="calc__radio-label">Interest Only</label>
+                        </div>
+                    </div>
+
+
+                    <div class="calc__radio-field">
+                        <label class="calc__label">Currency</label>
+                        <div class="calc__radio-flex">
+                            <div class="calc__radio-btn">
+                                <div class="calc__radio">
+                                    <input type="radio" id="pounds" name="currency" value="£">
+                                </div>
+                                <label for="pounds" class="calc__radio-label">£</label>
+                            </div>
+                            <div class="calc__radio-btn">
+                                <div class="calc__radio">
+                                    <input type="radio" id="dollars" name="currency" value="$" checked>
+                                </div>
+                                <label for="dollars" class="calc__radio-label">$</label>
+                            </div>
+                            <div class="calc__radio-btn">
+                                <div class="calc__radio">
+                                    <input type="radio" id="euros" name="currency" value="€">
+                                </div>
+                                <label for="euros" class="calc__radio-label">€</label>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="calc__btn-wrapper">
+                    <button class="calc__history-btn" aria-label="check history button">
+                        <img src="assets/svgs/save.svg" alt="save to history">
+                        Previous
+                    </button>
+                    <button class="calc__calculate-btn" aria-label="calcualte button">
+                        <img src="assets/svgs/history.svg" alt="calculator">
+                        Calculate
+                    </button>
+                </div>
+            </div>
+            <div class="results">
+                <div class="results__preview results__preview--hidden">
+                    <div class="results__preview-img">
+                        <img src="assets/images/preview.png" alt="Calculator with a set of calculating supplies">
+                    </div>
+                    <h2 class="results__preview-title">Results shown here</h2>
+                    <p class="results__preview-description">Complete the form and click "Calculate" to see what your monthly repayments would be.</p>
+                </div>
+                <div class="results__wrapper">
+                    <h2 class="results__title">Your Results</h2>
+                    <p class="results__desc">Your results are shown below based on the information you provided. To adjust, edit the form and recalculate.</p>
+                    <div class="results__content">
+                        <div class="results__monthly">
+                            <p class="results__subtitle">Your monthly repayments</p>
+                            <input type="text" class="results__monthly-outcome" value="£245" id="monthlyResult">
+                        </div>
+                        <div class="results__total">
+                            <p class="results__subtitle">Total you'll repay over the term</p>
+                            <input type="text" class="results__total-outcome" value="£24345" id="totalResult">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>        
+    </body>
+</html>
